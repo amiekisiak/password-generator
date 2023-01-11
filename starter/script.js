@@ -1,3 +1,8 @@
+
+// Get references to the #generate element
+const generateBtn = document.querySelector("#generate");
+const passwordField = document.querySelector("#password");
+
 // Array of special characters to be included in password
 var passChoiceArr = []
 var specialArr = [
@@ -89,67 +94,49 @@ var upperCasedArr = [
   'Z'
 ];
 
-
 // Function to prompt user for password options
 function getPasswordOptions() {
-
-}
-
-// Get references to the #generate element
-var generateBtn = document.querySelector('#generate');
-
-
-// Write password to the #password input
-
-function writePassword() {
-  var correctPrompts = getPrompts();
-  
-  if(correctPrompts){
-  var newPassword = generatePassword();
-  var passwordText = document.querySelector('#password');
-
-  passwordText.value = newPassword;
-} else {
-  passwordText.value = "";
-}
-}
-
-//password based on prompts
-
-// Function to generate password with user input
-function generatePassword(){
-var password ="";
-for(var i = 0; i < charLength;i++){
-var randomIndex = Math.floor(Math.random() * passChoiceArr.length);
-password = password + passChoiceArr[randomIndex];
-}
-return password;
-}
-
-//prompt for password
-
-function getPrompts() {
-  charLength = parseInt(prompt("The number of characters in your password must be (10-64 characters)"));
-  if (isNaN(charLength) || charLength < 10 || charLength > 64) {
-    alert("Character length has to be a number, 10-64 digit, Try again");
-    return false;
+  const passwordLength = parseInt(prompt("Enter password length between 10-64, Try again"));
+  if (isNaN(passwordLength) || passwordLength < 10 || passwordLength > 64) {
+    alert("Password length must be between 10-64");
+    return;
   }
-    if (confirm("Would you like lowercase letter in your password?")) {
-      passChoiceArr = passChoiceArr.concat(lowerCasedArr);
-    }
-
-    if (confirm("Would you like uppercase letter in your password?")) {
-      passChoiceArr = passChoiceArr.concat(upperCasedArr);
-    }
-    if (confirm("Would you special character in your password?")) {
-      passChoiceArr = passChoiceArr.concat(specialArr);
-    }
-
-    if (confirm("Would you like numbers in your password?")) {
-      passChoiceArr = passChoiceArr.concat(numericArr);
-    }
-    return true;
+  let passwordArr = [];
+  if (confirm("Include lowercase letters?")) {
+    passwordArr = passwordArr.concat(lowerCasedArr);
+  }
+  if (confirm("Include uppercase letters?")) {
+    passwordArr = passwordArr.concat(upperCasedArr);
+  }
+  if (confirm("Include numeric characters?")) {
+    passwordArr = passwordArr.concat(numericArr);
+  }
+  if (confirm("Include special characters?")) {
+    passwordArr = passwordArr.concat(specialArr);
+  }
+  if (passwordArr.length === 0) {
+    alert("Please choose at least one character type");
+    return;
+  }
+  return { passwordArr, passwordLength };
 }
-
+// Function to generate password with user input
+function generatePassword(passArr, length) {
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    let randomIndex = Math.floor(Math.random() * passArr.length);
+    password += passArr[randomIndex];
+  }
+  return password;
+}
 // Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+generateBtn.addEventListener("click", function () {
+  const options = getPasswordOptions();
+  if (options) {
+    const newPassword = generatePassword(options.passwordArr, options.passwordLength);
+    passwordField.value = newPassword;
+  }
+  else {
+    passwordField.value = "";
+  }
+});
