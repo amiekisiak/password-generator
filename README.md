@@ -19,10 +19,10 @@ N/A
 
 ## Usage:
 
-URL of the deployed application: 
+URL of the deployed application: https://amiekisiak.github.io/password-generator/
 
 
- ## Usage:
+ ## Screenshot:
 
 ![screencapture-127-0-0-1-5555-starter-index-html-2023-01-11-23_13_42](https://user-images.githubusercontent.com/117371691/211938269-806c85a0-f465-4870-b119-5c8c32aadb5d.png)
 
